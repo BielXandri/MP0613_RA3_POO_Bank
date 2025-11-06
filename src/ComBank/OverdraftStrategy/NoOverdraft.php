@@ -6,9 +6,18 @@
  * Date: 7/28/24
  * Time: 12:27 PM
  */
+use ComBank\OverdraftStrategy\Contracts\OverdraftInterface;
 
-class NoOverdraft 
+class NoOverdraft implements OverdraftInterface
 {
+    public function isGrantOverdraftFunds(float $amount): bool
+    {
+        return false;
+    }
 
-   
+    public function getOverdraftFundsAmount(): float
+    {
+        return 0.0;
+    }
 }
+
