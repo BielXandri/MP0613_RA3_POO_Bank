@@ -1,11 +1,7 @@
-<?php namespace ComBank\Transactions;
+<?php 
+
+namespace ComBank\Transactions;
  
-/**
- * Created by VS Code.
- * User: JPortugal
- * Date: 7/28/24
- * Time: 1:22 PM
- */ 
 use ComBank\Bank\Contracts\BankAccountInterface;
 use ComBank\Exceptions\InvalidOverdraftFundsException;
 use ComBank\Transactions\Contracts\BankTransactionInterface;
@@ -23,20 +19,20 @@ class WithdrawTransaction extends BaseTransaction
             $newBalance = $currentBalance - $amountToWithdraw;
             $account->setBalance($newBalance);
             return $newBalance;
-        } else {
-            $overdraftStrategy = $account->getOverdraft();
-            $neededFunds = $amountToWithdraw - $currentBalance;
-
-            if ($overdraftStrategy->isGrantOverdraftFunds($neededFunds)) {
-                $newBalance = $currentBalance - $amountToWithdraw; 
-                $account->setBalance($newBalance);
-                return $newBalance;
-            } else {
-                throw new InvalidOverdraftFundsException(
-                    "Insufficient funds and overdraft not allowed or not enough for this withdrawal. Needed: {$amountToWithdraw}, Available: {$currentBalance}"
-                );
-            }
-        }
+        } 
+        
+        $overdraftStrategy = $account->getOverdraft();
+        $neededFunds = $amountToWithdraw - $currentBalance;
+        
+        if ($overdraftStrategy !== null && $overdraftStrategy->isGrantOverdraftFunds($neededFunds)) {
+            $newBalance = $currentBalance - $amountToWithdraw; 
+            $account->setBalance($newBalance);
+            return $newBalance;
+        } 
+        
+        throw new FailedTransactionException(
+            "Withdrawal amount exceeds available balance and overdraft limit. Needed: {$amountToWithdraw}, Available: {$currentBalance}"
+        );
     }
 
     public function getTransactionInfo(): string

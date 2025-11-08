@@ -9,20 +9,20 @@ use ComBank\Exceptions\BankAccountException;
 
 class BankAccount implements BankAccountInterface
 {
-        private float $balance;
+    private float $balance;
     private bool $status; 
-    private OverdraftInterface $overdraft;
+    private ?OverdraftInterface $overdraft; // CORRECCIÓN 1: Permite NULL
 
     public function __construct(float $initialBalance = 0.0, ?OverdraftInterface $overdraft = null)
-{
-    if ($initialBalance < 0) {
-        throw new BankAccountException("Initial balance cannot be negative.");
-    }
+    {
+        if ($initialBalance < 0) {
+            throw new BankAccountException("Initial balance cannot be negative.");
+        }
 
-    $this->balance = $initialBalance;
-    $this->status = true; 
-    $this->overdraft = $overdraft;
-}
+        $this->balance = $initialBalance;
+        $this->status = true; 
+        $this->overdraft = $overdraft;
+    }
 
 
     public function transaction(BankTransactionInterface $transaction): void
@@ -59,7 +59,7 @@ class BankAccount implements BankAccountInterface
         return $this->balance;
     }
 
-    public function getOverdraft(): OverdraftInterface
+    public function getOverdraft(): ?OverdraftInterface 
     {
         return $this->overdraft;
     }
