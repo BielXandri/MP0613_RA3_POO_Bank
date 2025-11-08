@@ -22,17 +22,16 @@ pl('--------- [Start testing bank account #1, No overdraft] --------');
 try {
     $bankAccount1 = new BankAccount(initialBalance: 400.0);
     // show balance account
-    pl('My balance : ' . $bankAccount1->getBalance()); // Output: My balance : 400.0
+    pl('My balance : ' . $bankAccount1->getBalance()); 
 
     // close account
     $bankAccount1->closeAccount();
-    pl('My account is now closed.'); // Output: My account is now closed.
+    pl('My account is now closed.'); 
 
-    // reopen account
     // reopen account
     $bankAccount1->reopenAccount();
     pl('My account 
-    0.is now reopened.'); // Output: My account is now reopened.
+    0.is now reopened.'); 
 
 
     // deposit +150 

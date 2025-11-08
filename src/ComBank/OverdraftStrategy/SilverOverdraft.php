@@ -1,4 +1,5 @@
-<?php namespace ComBank\OverdraftStrategy;
+<?php 
+namespace ComBank\OverdraftStrategy;
 
 /**
  * Created by VS Code.
@@ -6,22 +7,33 @@
  * Date: 7/28/24
  * Time: 1:39 PM
  */
-/**
- * @description: Grant 100.00 overdraft funds.
- * */
+
 use ComBank\OverdraftStrategy\Contracts\OverdraftInterface;
+
 class SilverOverdraft implements OverdraftInterface
 {
-            private const OVERDRAFT_LIMIT = 500.00; // Example limit
+    /** @var float El límite de sobregiro específico para esta instancia. */
+    private float $overdraftLimit;
+
+    /**
+     * Constructor que acepta el límite de sobregiro como argumento.
+     * Esto resuelve el error "does not have any constructor and shall be called without arguments".
+     * @param float $limit El monto del límite de sobregiro (ej: 100.0).
+     */
+    public function __construct(float $limit)
+    {
+        $this->overdraftLimit = $limit;
+    }
+
     public function isGrantOverdraftFunds(float $amount): bool
     {
-        // For a withdrawal, $amount would be positive. We check if the absolute amount
-        // is within the overdraft limit.
-        return abs($amount) <= self::OVERDRAFT_LIMIT;
+        // Se utiliza la propiedad dinámica $this->overdraftLimit.
+        return abs($amount) <= $this->overdraftLimit;
     }
+
     public function getOverdraftFundsAmount(): float
     {
-        return self::OVERDRAFT_LIMIT;
+        // Devuelve el límite de sobregiro que se pasó al constructor.
+        return $this->overdraftLimit;
     }
 }
-
