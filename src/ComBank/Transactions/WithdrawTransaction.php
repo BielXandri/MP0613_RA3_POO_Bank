@@ -20,18 +20,15 @@ class WithdrawTransaction extends BaseTransaction
         $amountToWithdraw = $this->amount;
 
         if ($currentBalance >= $amountToWithdraw) {
-            // Funds available
             $newBalance = $currentBalance - $amountToWithdraw;
             $account->setBalance($newBalance);
             return $newBalance;
         } else {
-            // Check for overdraft
             $overdraftStrategy = $account->getOverdraft();
             $neededFunds = $amountToWithdraw - $currentBalance;
 
             if ($overdraftStrategy->isGrantOverdraftFunds($neededFunds)) {
-                // Grant overdraft
-                $newBalance = $currentBalance - $amountToWithdraw; // This will be negative
+                $newBalance = $currentBalance - $amountToWithdraw; 
                 $account->setBalance($newBalance);
                 return $newBalance;
             } else {

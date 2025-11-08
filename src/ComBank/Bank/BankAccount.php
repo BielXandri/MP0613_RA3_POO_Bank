@@ -10,7 +10,7 @@ use ComBank\Exceptions\BankAccountException;
 class BankAccount implements BankAccountInterface
 {
         private float $balance;
-    private bool $status; // true for open, false for closed
+    private bool $status; 
     private OverdraftInterface $overdraft;
 
     public function __construct(float $initialBalance = 0.0, ?OverdraftInterface $overdraft = null)
@@ -20,7 +20,7 @@ class BankAccount implements BankAccountInterface
     }
 
     $this->balance = $initialBalance;
-    $this->status = true; // Account is open by default
+    $this->status = true; 
     $this->overdraft = $overdraft;
 }
 
